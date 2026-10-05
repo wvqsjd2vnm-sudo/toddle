@@ -28,10 +28,22 @@ will most likely cover and how it will be set. Produce Markdown with: 1) Likely 
 answer key. Be explicit about confidence and what is a guess."""
 
 
+PICK_SYS = """These are menu links from a school's Toddle parent/student portal. Choose the ones
+most likely to contain homework / assignments / to-do items, announcements / notices /
+messages, and the assessment/test calendar. Skip settings, profile, help, logout.
+Return {"open": ["exact link text", ...]} (max 8)."""
+
+
+def pick_pages(links: list[dict]) -> list[str]:
+    res = llm.ask_json(PICK_SYS, json.dumps(links, ensure_ascii=False))
+    return [t for t in (res.get("open", []) if isinstance(res, dict) else []) if isinstance(t, str)]
+
+
 def run(headless: bool = True) -> None:
     config.OUT_DIR.mkdir(parents=True, exist_ok=True)
-    pages = scraper.fetch_pages(headless)
+    pages = scraper.fetch_pages(headless, pick=pick_pages)
     corpus = "\n\n".join(f"=== {k} ===\n{v}" for k, v in pages.items())
+    config.OUT_DIR.joinpath("last-pages-seen.txt").write_text(corpus)  # debug: what the agent saw
     data = llm.ask_json(EXTRACT_SYS, corpus[:150_000], max_tokens=8000)
     homework = data.get("homework", []) if isinstance(data, dict) else []
     announcements = data.get("announcements", []) if isinstance(data, dict) else []

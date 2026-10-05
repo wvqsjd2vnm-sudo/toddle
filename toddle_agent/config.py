@@ -9,4 +9,6 @@ OUT_DIR = Path(os.getenv("TODDLE_OUT_DIR", "out"))
 STUDENT_NAME = os.getenv("STUDENT_NAME", "my son")
 STUDENT_GRADE = os.getenv("STUDENT_GRADE", "")  # e.g. "Grade 5"
 # Comma-separated page paths to read after login. Adjust to what your school's Toddle shows.
-PAGES = [p.strip() for p in os.getenv("TODDLE_PAGES", "/,/assignments,/announcements").split(",") if p.strip()]
+# If TODDLE_PAGES is unset the agent finds the right pages itself by reading Toddle's menu.
+PAGES_EXPLICIT = bool(os.getenv("TODDLE_PAGES"))
+PAGES = [p.strip() for p in os.getenv("TODDLE_PAGES", "").split(",") if p.strip()]
