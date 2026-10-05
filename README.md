@@ -17,4 +17,5 @@ Optional: `TODDLE_URL`, `TODDLE_PAGES` (default `/,/assignments,/announcements`)
 
 ## Notes
 - The agent **does not submit** anything to Toddle. It prepares drafts so your son can learn from them and hand in his own work.
+- Explanations are written at a 4th–5th grade reading level so your son can understand and redo them himself. They are not styled to imitate a child's writing.
 - Page text is read generically (no fragile selectors), but it hasn't been tested against your school's live Toddle account – if the output is empty, run `python -m toddle_agent run --show` and adjust `TODDLE_PAGES`.
