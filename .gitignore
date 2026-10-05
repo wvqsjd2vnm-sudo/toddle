@@ -4,3 +4,4 @@ node_modules/
 seed.sql
 codes.txt
 *.docx
+__pycache__/
