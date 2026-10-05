@@ -1,0 +1,10 @@
+{
+  "name": "games-codes",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node --test test/"
+  },
+  "devDependencies": { "wrangler": "^4" }
+}

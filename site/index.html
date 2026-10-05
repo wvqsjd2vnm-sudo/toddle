@@ -1,0 +1,226 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>GAMES</title>
+<style>
+html,body{margin:0;height:100%;background:#000;overflow:hidden;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0}
+/* ---------- hub ---------- */
+#hub{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;overflow:auto;
+background:radial-gradient(ellipse at 50% -10%,#2b0a5c 0%,#0a0618 55%,#04020c 100%);color:#fff;text-align:center}
+#hub:before{content:"";position:fixed;left:-50%;right:-50%;bottom:-10%;height:60%;background:repeating-linear-gradient(0deg,transparent 0 38px,rgba(0,255,238,.16) 38px 40px),repeating-linear-gradient(90deg,transparent 0 38px,rgba(255,43,214,.16) 38px 40px);transform:perspective(420px) rotateX(62deg);transform-origin:bottom;animation:grid 3s linear infinite;pointer-events:none;mask-image:linear-gradient(transparent,#000 70%)}
+@keyframes grid{to{background-position:0 40px,0 0}}
+.wrap{position:relative;width:100%;max-width:900px;margin:auto}
+h1{margin:0;font-size:clamp(54px,12vw,110px);font-weight:900;letter-spacing:.12em;padding-left:.12em;line-height:1;color:#fff;
+text-shadow:0 0 6px #fff,0 0 16px #0ff,0 0 38px #0ff,0 0 80px #0ff;animation:flick 4s infinite}
+@keyframes flick{0%,18%,22%,62%,64%,100%{opacity:1}20%,63%{opacity:.6}}
+.sub{margin:10px 0 clamp(22px,5vh,44px);font-size:clamp(18px,3.4vw,28px);letter-spacing:.35em;font-weight:700;color:#ff6ee7;text-shadow:0 0 10px #ff2bd6,0 0 26px #ff2bd6}
+.cards{display:flex;align-items:stretch;gap:clamp(16px,3vw,32px);justify-content:center;flex-wrap:wrap}
+.card{--c:#0ff;position:relative;flex:1 1 260px;max-width:320px;box-sizing:border-box;padding:clamp(18px,3vw,30px) 20px 24px;border:2px solid var(--c);border-radius:20px;background:rgba(10,6,26,.78);color:#fff;font:inherit;cursor:pointer;
+box-shadow:0 0 14px var(--c),0 0 40px color-mix(in srgb,var(--c) 45%,transparent),inset 0 0 26px color-mix(in srgb,var(--c) 22%,transparent);transition:transform .18s,box-shadow .18s}
+.card:hover,.card:focus-visible{transform:translateY(-6px) scale(1.025);outline:none;box-shadow:0 0 22px var(--c),0 0 70px var(--c),inset 0 0 34px color-mix(in srgb,var(--c) 38%,transparent)}
+.card:active{transform:scale(.98)}
+.ic{font-size:clamp(60px,12vw,92px);line-height:1.1;filter:drop-shadow(0 0 14px var(--c));animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.nm{margin:8px 0 6px;font-size:clamp(24px,4.6vw,34px);font-weight:900;letter-spacing:.06em;color:var(--c);text-shadow:0 0 12px var(--c)}
+.tg{margin:0 0 18px;font-size:clamp(15px,2.6vw,18px);opacity:.85}
+.pl{display:inline-block;padding:11px 34px;border-radius:30px;border:2px solid var(--c);font-weight:800;letter-spacing:.2em;color:var(--c);text-shadow:0 0 8px var(--c);box-shadow:0 0 12px var(--c),inset 0 0 12px color-mix(in srgb,var(--c) 30%,transparent)}
+.f1{--c:#19f0ff}.sr{--c:#ff3df0}
+#lockBox{max-width:420px;margin:0 auto}
+.lk{font-size:clamp(50px,10vw,76px);filter:drop-shadow(0 0 14px #ff3df0);margin-bottom:8px}
+#code{width:100%;box-sizing:border-box;text-align:center;font:800 clamp(30px,8vw,44px) ui-monospace,Menlo,Consolas,monospace;letter-spacing:.35em;padding:14px 8px 14px 20px;border-radius:16px;border:2px solid #19f0ff;background:rgba(10,6,26,.8);color:#fff;outline:none;box-shadow:0 0 14px #19f0ff,inset 0 0 18px rgba(25,240,255,.2)}
+#code::placeholder{color:#3a5a70}
+#code:focus{box-shadow:0 0 24px #19f0ff,0 0 60px rgba(25,240,255,.5),inset 0 0 22px rgba(25,240,255,.3)}
+.go{--c:#ff3df0;margin-top:18px;background:rgba(10,6,26,.8);font:inherit;font-weight:800;letter-spacing:.2em;padding:13px 44px;cursor:pointer}
+.go:disabled{opacity:.4;cursor:default}
+.er{min-height:24px;margin:12px 0 0;font-weight:700;color:#ff5b6e;text-shadow:0 0 10px #ff2b4a}
+.hint{margin:14px 0 4px;font-size:clamp(16px,3vw,19px);color:#bffcff;text-shadow:0 0 8px rgba(0,255,255,.5)}
+.hint2{margin:0;font-size:14px;opacity:.6}
+.shake{animation:shake .4s}@keyframes shake{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+.wrap{max-width:1020px}
+.sr2{--c:#a678ff}
+.card.locked{--c:#aab3be;cursor:not-allowed;overflow:hidden;border-color:#9aa4af;background:repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 2px,rgba(0,0,0,.06) 2px 4px),linear-gradient(160deg,#2c323b,#13161b);
+box-shadow:0 8px 22px rgba(0,0,0,.7),inset 0 0 0 2px #444c57,inset 0 0 34px rgba(0,0,0,.65)}
+.card.locked:hover{transform:none;box-shadow:0 8px 22px rgba(0,0,0,.7),inset 0 0 0 2px #444c57,inset 0 0 34px rgba(0,0,0,.65)}
+.card.locked .ic{filter:grayscale(1) brightness(.5);animation:none;margin-top:46px}
+.card.locked .nm{color:#b9c1cb;text-shadow:0 1px 0 #000}.card.locked .tg{color:#8a94a0}
+.chain{position:absolute;left:-25%;width:150%;top:74px;height:22px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='22' viewBox='0 0 48 22'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23eef1f5'/%3E%3Cstop offset='.5' stop-color='%239aa4af'/%3E%3Cstop offset='1' stop-color='%2359626d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='3' y='3' width='26' height='16' rx='8' fill='none' stroke='%2314171c' stroke-width='6'/%3E%3Crect x='23' y='7' width='24' height='8' rx='4' fill='none' stroke='%2314171c' stroke-width='5.5'/%3E%3Crect x='3' y='3' width='26' height='16' rx='8' fill='none' stroke='url%28%23g%29' stroke-width='3.6'/%3E%3Crect x='23' y='7' width='24' height='8' rx='4' fill='none' stroke='url%28%23g%29' stroke-width='3.2'/%3E%3C/svg%3E") repeat-x;background-size:48px 22px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.7));pointer-events:none;z-index:2}
+.chain.a{transform:rotate(21deg)}.chain.b{transform:rotate(-21deg)}
+.padlock{position:absolute;left:50%;top:30px;width:78px;margin-left:-39px;z-index:3;filter:drop-shadow(0 4px 5px rgba(0,0,0,.8));pointer-events:none}
+.plate{display:inline-block;position:relative;padding:9px 26px;border-radius:6px;font-weight:900;font-size:13px;letter-spacing:.12em;color:#1a1d22;text-shadow:0 1px 0 rgba(255,255,255,.5);
+background:linear-gradient(#d6dbe2,#8d96a1);box-shadow:0 2px 5px rgba(0,0,0,.7),inset 0 1px 0 #fff;line-height:1.35}
+.plate:before,.plate:after{content:"";position:absolute;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff,#555)}
+.plate:before{left:8px}.plate:after{right:8px}
+.card:not(.locked) .lockedUI,.card:not(.locked) .chain,.card:not(.locked) .padlock{display:none}
+.card.locked .openUI{display:none}
+.shake{animation:shake .4s}@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+/* ---------- VR code slot ---------- */
+.card{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.chain,.padlock{transition:top .7s ease-in,opacity .7s ease-in,transform .7s ease-in}
+.card.opening .chain{top:360px;opacity:0}.card.opening .padlock{top:330px;opacity:0;transform:rotate(28deg)}
+.vrin{width:78%;box-sizing:border-box;margin:8px auto 4px;text-align:center;font:800 22px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.3em;padding:8px 6px 8px 14px;border-radius:8px;border:2px solid #9aa4af;background:#0f1216;color:#e4e9ee;outline:none;box-shadow:inset 0 2px 6px #000}
+.vrin::placeholder{color:#4a525c}.vrin:focus{border-color:#fff}
+.verr{min-height:18px;margin:2px 0 8px;font-size:13px;font-weight:700;color:#ff7b86}
+#ld{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#000;color:#9aa4af;font-size:20px;letter-spacing:.2em;z-index:5}
+.card:not(.locked) .lockedUI,.card:not(.locked) .vrin,.card:not(.locked) .verr{display:none}
+/* ---------- back button ---------- */
+#back{position:fixed;top:max(8px,env(safe-area-inset-top));left:max(8px,env(safe-area-inset-left));z-index:8;display:none;width:42px;height:42px;border-radius:50%;border:2px solid #19f0ff;background:rgba(6,4,18,.55);color:#19f0ff;font-size:20px;line-height:1;cursor:pointer;opacity:.55;box-shadow:0 0 10px #19f0ff}
+#back:hover,#back:focus-visible{opacity:1}
+/* ---------- maintenance ---------- */
+#m{position:fixed;inset:0;background:#0d0f14;color:#e6edf3;display:none;align-items:center;justify-content:center;text-align:center;padding:24px;z-index:9}
+#m>div{width:100%;max-width:600px}
+.ico{display:block;width:min(340px,72vw);height:auto;margin:0 auto 8px}
+#m h2{font-size:46px;font-weight:900;letter-spacing:4px;margin:10px 0 14px}
+#m p{margin:8px 0;font-size:22px;line-height:1.5;color:#b4bfcb}#m .s{font-size:19px;color:#8693a1}
+</style></head><body>
+<button id="back" aria-label="Back to games" title="Back to games">☰</button>
+
+<div id="hub"><div class="wrap">
+<h1>GAMES</h1>
+<div class="sub" id="sub">CHOOSE:</div>
+<div id="lockBox" style="display:none">
+<div class="lk">🔒</div>
+<input id="code" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" placeholder="000000" aria-label="6-digit code">
+<div><button id="go" class="pl go">UNLOCK</button></div>
+<p id="err" class="er"></p>
+<p class="hint">Get back to the game maker to get your code</p>
+<p class="hint2">You only need to enter it once on this device.</p>
+</div>
+<div class="cards" id="cardsBox">
+<button class="card f1" data-g="f1"><div class="ic">🏎️</div><div class="nm">TURBO DRIFT</div><p class="tg">F1 racing</p><span class="pl">PLAY</span></button>
+<button class="card sr" data-g="storm"><div class="ic">⚡</div><div class="nm">STORM RUSH</div><p class="tg">Play with friends</p><span class="pl">PLAY</span></button>
+<div class="card sr2 locked" id="vrCard"><div class="chain a"></div><div class="chain b"></div>
+<svg class="padlock" viewBox="0 0 80 96"><defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1f4f8"/><stop offset=".5" stop-color="#a3adb8"/><stop offset="1" stop-color="#5a636e"/></linearGradient></defs><path d="M20 44V28a20 20 0 0 1 40 0v16" fill="none" stroke="#14171c" stroke-width="13" stroke-linecap="round"/><path d="M20 44V28a20 20 0 0 1 40 0v16" fill="none" stroke="url(#pg)" stroke-width="8" stroke-linecap="round"/><rect x="6" y="42" width="68" height="50" rx="9" fill="url(#pg)" stroke="#14171c" stroke-width="3"/><circle cx="40" cy="62" r="7" fill="#14171c"/><rect x="37" y="63" width="6" height="14" rx="3" fill="#14171c"/></svg>
+<div class="ic">🥽</div><div class="nm">STORM RUSH VR</div><p class="tg">VR edition</p>
+<input class="vrin lockedUI" id="vrIn" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" placeholder="VR CODE" aria-label="VR code">
+<p class="verr lockedUI" id="vrErr"></p>
+<span class="plate lockedUI">UNLOCK BY CONTACTING<br>THE GAME MAKER</span><span class="pl openUI">PLAY</span></div>
+</div></div></div>
+
+<div id="ld">LOADING…</div>
+
+<div id="m"><div>
+<img class="ico" src="maintenance.gif" alt="Maintenance">
+<h2>MAINTENANCE</h2>
+<p>We're upgrading the game. Come back later!</p>
+<p class="s">All your progress is saved.</p>
+<p id="t" class="s"></p>
+</div></div>
+
+<script>
+var authed=null;
+var GAMES={f1:'f1.html',storm:'storm.html'};
+var pendingJoin=null;
+try{var q0=new URLSearchParams(location.search),jc=q0.get('join');if(jc){pendingJoin=jc.slice(0,40);q0.delete('join');var rest0=q0.toString();history.replaceState(null,'',location.pathname+(rest0?'?'+rest0:'')+'#storm')}}catch(e){}
+var VRKEY='gh_vr',VRIT=200000,memVR=null,vrBuf=null,vrUrl=null,vrFails=0,vrBusy=false;
+var g=null,hub=document.getElementById('hub'),m=document.getElementById('m'),back=document.getElementById('back'),t=document.getElementById('t'),st=null,cur=null,viaHub=false;
+// a fresh iframe each time keeps the browser Back button clean (no extra history steps)
+function setGame(url){
+  if(g){g.remove();g=null}
+  if(!url)return;
+  g=document.createElement('iframe');g.title='Game';
+  g.setAttribute('allow','fullscreen; xr-spatial-tracking; gamepad; autoplay; accelerometer; gyroscope');
+  g.allowFullscreen=true;g.src=url;
+  g.addEventListener('load',function(){try{if(url.indexOf('blob:')!==0)g.contentWindow.history.replaceState(null,'',location.pathname)}catch(e){}try{g.contentWindow.focus()}catch(e){}});
+  document.body.insertBefore(g,document.body.firstChild);
+}
+function isUnlocked(){return authed===true}
+var codeEl=document.getElementById('code'),goEl=document.getElementById('go'),errEl=document.getElementById('err'),lockBox=document.getElementById('lockBox'),cardsBox=document.getElementById('cardsBox'),subEl=document.getElementById('sub'),fails=0,busy=false;
+function tryCode(){
+  var c=codeEl.value.replace(/\D/g,'');
+  if(busy)return;
+  if(c.length!==6){errEl.textContent='Enter all 6 digits.';return}
+  busy=true;goEl.disabled=true;errEl.textContent='';
+  fetch('/api/redeem',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({code:c})}).then(function(r){return r.json().catch(function(){return{}})}).then(function(d){
+    if(d.ok){authed=true;codeEl.value='';busy=false;goEl.disabled=false;render();return}
+    codeEl.value='';codeEl.classList.remove('shake');void codeEl.offsetWidth;codeEl.classList.add('shake');
+    if(d.error==='too_many'){errEl.textContent='Too many tries. Wait 10 minutes.';setTimeout(function(){busy=false;goEl.disabled=false;errEl.textContent=''},30000);return}
+    errEl.textContent=d.error==='used'?'This code was already used.':'Wrong code. Try again.';busy=false;goEl.disabled=false;
+  }).catch(function(){errEl.textContent='Something went wrong. Try again.';busy=false;goEl.disabled=false});
+}
+goEl.addEventListener('click',tryCode);
+codeEl.addEventListener('input',function(){codeEl.value=codeEl.value.replace(/\D/g,'').slice(0,6);if(codeEl.value.length===6)tryCode()});
+codeEl.addEventListener('keydown',function(e){if(e.key==='Enter')tryCode()});
+function vrCodeVal(){if(memVR)return memVR;try{return localStorage.getItem(VRKEY)||null}catch(e){return null}}
+function vrUnlocked(){return !!vrCodeVal()}
+function loadVr(){
+  if(vrBuf)return Promise.resolve(vrBuf);
+  return fetch('vr.bin?v='+encodeURIComponent((st&&st.version)||'')).then(function(r){if(!r.ok)throw new Error('missing');return r.arrayBuffer()}).then(function(b){vrBuf=b;return b});
+}
+function decryptVr(buf,code){
+  var u=new Uint8Array(buf),salt=u.slice(0,16),iv=u.slice(16,28),data=u.slice(28);
+  return crypto.subtle.importKey('raw',new TextEncoder().encode(code),'PBKDF2',false,['deriveKey']).then(function(k){
+    return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:VRIT,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt'])})
+  .then(function(key){return crypto.subtle.decrypt({name:'AES-GCM',iv:iv},key,data)});
+}
+var vrIn=document.getElementById('vrIn'),vrErr=document.getElementById('vrErr'),ldEl=document.getElementById('ld');
+function tryVr(){
+  var c=vrIn.value.replace(/\D/g,'');
+  if(vrBusy)return;
+  if(c.length!==6){vrErr.textContent='Enter all 6 digits.';return}
+  if(!(window.crypto&&crypto.subtle)){vrErr.textContent='Open with https://';return}
+  vrBusy=true;vrErr.textContent='Checking…';
+  loadVr().then(function(buf){return decryptVr(buf,c)}).then(function(){
+    memVR=c;try{localStorage.setItem(VRKEY,c)}catch(e){}
+    vrIn.value='';vrErr.textContent='';
+    var card=document.getElementById('vrCard');card.classList.add('opening');
+    setTimeout(function(){card.classList.remove('opening');vrBusy=false;render()},800);
+  }).catch(function(e){
+    vrIn.value='';
+    if(e&&e.message==='missing'){vrErr.textContent='VR is not ready yet.';vrBusy=false;return}
+    vrFails++;var card=document.getElementById('vrCard');card.classList.remove('shake');void card.offsetWidth;card.classList.add('shake');
+    if(vrFails>=5){var left=30;vrErr.textContent='Too many tries. Wait '+left+'s';var iv=setInterval(function(){left--;if(left<=0){clearInterval(iv);vrFails=0;vrBusy=false;vrErr.textContent=''}else{vrErr.textContent='Too many tries. Wait '+left+'s'}},1000)}
+    else{vrErr.textContent='Wrong VR code.';vrBusy=false}
+  });
+}
+vrIn.addEventListener('input',function(){vrIn.value=vrIn.value.replace(/\D/g,'').slice(0,6);if(vrIn.value.length===6)tryVr()});
+vrIn.addEventListener('keydown',function(e){if(e.key==='Enter')tryVr()});
+function startVr(want){
+  setGame(null);ldEl.style.display='flex';
+  loadVr().then(function(buf){return decryptVr(buf,vrCodeVal())}).then(function(pt){
+    if(cur!==want)return;
+    if(vrUrl)URL.revokeObjectURL(vrUrl);
+    vrUrl=URL.createObjectURL(new Blob([pt],{type:'text/html;charset=utf-8'}));
+    ldEl.style.display='none';setGame(vrUrl);
+  }).catch(function(){
+    ldEl.style.display='none';memVR=null;try{localStorage.removeItem(VRKEY)}catch(e){}
+    cur=null;location.hash='';render();
+  });
+}
+function render(){
+  if(!st||authed===null)return;
+  var key=location.hash.slice(1);
+  var vrOK=vrUnlocked();
+  if(key==='vr'&&!vrOK)key='';
+  var vc=document.getElementById('vrCard');
+  if(!vc.classList.contains('opening')){if(vrOK){vc.classList.remove('locked');vc.setAttribute('data-g','vr')}else{vc.classList.add('locked');vc.removeAttribute('data-g')}}
+  if(st.maintenance){
+    t.textContent=st.message||'';
+    m.style.display='flex';hub.style.display='none';back.style.display='none';
+    if(cur!==null){cur=null;setGame(null)}
+    return;
+  }
+  m.style.display='none';
+  if(!isUnlocked()){
+    hub.style.display='flex';back.style.display='none';viaHub=false;
+    lockBox.style.display='block';cardsBox.style.display='none';subEl.textContent='ENTER YOUR CODE';
+    if(cur!==null){cur=null;setGame(null)}
+    return;
+  }
+  lockBox.style.display='none';cardsBox.style.display='flex';subEl.textContent='CHOOSE:';
+  if(GAMES[key]||key==='vr'){
+    hub.style.display='none';back.style.display='block';
+    var want=key+'|'+st.version;
+    if(cur!==want){cur=want;if(key==='vr'){startVr(want)}else{var extra='';if(key==='storm'&&pendingJoin){extra='&join='+encodeURIComponent(pendingJoin);pendingJoin=null}setGame(GAMES[key]+'?v='+encodeURIComponent(st.version||'')+extra)}}
+  }else{
+    hub.style.display='flex';back.style.display='none';viaHub=false;ldEl.style.display='none';
+    if(cur!==null){cur=null;setGame(null)}
+  }
+}
+function check(){
+  fetch('status.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(s){st=s;render()})
+  .catch(function(){if(!st){st={maintenance:false,version:''};render()}});
+}
+document.querySelectorAll('.card').forEach(function(b){b.addEventListener('click',function(e){if(b.classList.contains('locked')){if(!e.target.closest('input')){b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake')}return}if(b.classList.contains('opening'))return;viaHub=true;location.hash=b.getAttribute('data-g')})});
+back.addEventListener('click',function(){if(viaHub){viaHub=false;history.back()}else{location.hash=''}});
+window.addEventListener('hashchange',render);
+fetch('/api/session',{cache:'no-store'}).then(function(r){return r.json()}).then(function(d){authed=!!d.ok}).catch(function(){authed=false}).then(render);
+check();setInterval(check,30000);
+</script></body></html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Games Admin</title>
+<style>body{font-family:system-ui,sans-serif;background:#0b0b14;color:#fff;max-width:520px;margin:0 auto;padding:20px}
+h2{margin:6px 0 4px}h3{margin:30px 0 4px;border-top:1px solid #333;padding-top:22px}
+label{display:block;margin:14px 0 4px;font-size:14px;opacity:.8}input,textarea{width:100%;box-sizing:border-box;padding:10px;border-radius:8px;border:1px solid #333;background:#16162a;color:#fff;font-size:16px}
+button{margin-top:14px;width:100%;padding:14px;border:0;border-radius:10px;background:#ff3b30;color:#fff;font-size:17px;font-weight:700;cursor:pointer}
+button.alt{background:#2a2a48}
+.row{display:flex;align-items:center;gap:10px;margin-top:14px}.row input{width:auto}ol{opacity:.85;line-height:1.7;font-size:14px}
+.note{opacity:.7;font-size:14px;margin:4px 0}#msg{color:#ff7b86;font-weight:700;min-height:22px;margin-top:10px}
+table{width:100%;border-collapse:collapse;margin-top:14px}td{padding:5px 4px;border-bottom:1px solid #222}td:first-child{opacity:.5;width:34px}
+td.c{font:700 18px ui-monospace,Menlo,Consolas,monospace;letter-spacing:2px;color:#19f0ff}td input{padding:6px;font-size:14px}
+.big{font:800 28px ui-monospace,Menlo,Consolas,monospace;letter-spacing:4px;color:#ffd23f}
+.mini{width:auto;padding:6px 10px;margin:0;font-size:13px}</style></head><body>
+<h2>🎮 Games Admin</h2>
+
+<h3>🔑 Codes</h3>
+<p class="note">Type your admin code to see all 100 player codes and which ones are already USED.</p>
+<input id="adm" inputmode="numeric" maxlength="6" placeholder="admin code" autocomplete="off">
+<button onclick="showCodes()">Show codes</button>
+<div id="msg"></div>
+<div id="codes" style="display:none">
+<p class="note">Codes used so far:</p><div class="big" id="ac"></div>
+<button class="alt" onclick="copyAll()">Copy all codes</button>
+<button class="alt" onclick="dlTxt()">Download as a text file</button>
+<table id="tb"></table>
+</div>
+
+<h3>🔧 Maintenance</h3>
+<div class="row"><input type="checkbox" id="mm"><b>Maintenance mode ON</b></div>
+<label>Live version</label><input id="ver" value="V9">
+<label>Replacing from</label><input id="from" placeholder="V6">
+<label>Replacing with</label><input id="to" placeholder="V7">
+<label>Custom message (optional)</label><textarea id="msgt" rows="2"></textarea>
+<button onclick="dl()">Download status.json</button>
+<ol><li><b>Start update:</b> tick ON → download → replace status.json in the folder → upload the zip with New deployment in Cloudflare.</li>
+<li><b>Finish:</b> replace the game file (f1.html or storm.html), untick, set the new version → download → replace status.json → upload again.</li></ol>
+<script>
+var D=null,AC='';
+function api(p,o){o=o||{};o.headers=Object.assign({'x-admin-code':AC,'content-type':'application/json'},o.headers||{});return fetch(p,o).then(function(r){return r.json()})}
+function showCodes(){
+  AC=adm.value.replace(/\D/g,'');var m=document.getElementById('msg');m.textContent='';
+  api('/api/admin/codes').then(function(d){if(!d.ok){m.textContent='Wrong admin code';return}D=d.codes;draw()}).catch(function(){m.textContent='Could not reach the server'});
+}
+function fmt(t){return t?new Date(t).toLocaleString():''}
+function draw(){
+  document.getElementById('codes').style.display='block';
+  var used=D.filter(function(x){return x.used_at}).length;
+  document.getElementById('ac').textContent=used+' used / '+D.length+' total';
+  var tb=document.getElementById('tb');tb.innerHTML='';
+  D.forEach(function(x,i){
+    var tr=document.createElement('tr');tr.style.opacity=x.used_at?.55:1;
+    tr.innerHTML='<td>'+(i+1)+'</td><td class="c">'+x.code+'</td><td><input placeholder="given to..."><div class="note">'+(x.used_at?'USED '+fmt(x.used_at):'unused')+'</div></td><td><button class="mini alt cp">Copy</button> '+(x.used_at?'<button class="mini alt rs">Reset</button>':'')+'</td>';
+    var inp=tr.querySelector('input');inp.value=x.label||'';
+    inp.addEventListener('change',function(){api('/api/admin/label',{method:'POST',body:JSON.stringify({code:x.code,label:inp.value})})});
+    tr.querySelector('.cp').addEventListener('click',function(){navigator.clipboard&&navigator.clipboard.writeText(x.code)});
+    var rs=tr.querySelector('.rs');if(rs)rs.addEventListener('click',function(){if(confirm('Make code '+x.code+' usable again? The person who used it loses access.'))api('/api/admin/reset',{method:'POST',body:JSON.stringify({code:x.code})}).then(showCodes)});
+    tb.appendChild(tr);
+  });
+}
+function txt(){return 'PLAYER CODES:\n'+D.map(function(x,i){return (i+1)+'. '+x.code+(x.label?' ('+x.label+')':'')+(x.used_at?'  -- USED '+fmt(x.used_at):'')}).join('\n')+'\n'}
+function copyAll(){navigator.clipboard&&navigator.clipboard.writeText(txt())}
+function dlTxt(){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt()],{type:'text/plain'}));a.download='codes.txt';a.click()}
+function dl(){var s={maintenance:mm.checked,version:ver.value.trim(),from:from.value.trim(),to:to.value.trim(),message:msgt.value.trim()};
+var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(s)],{type:'application/json'}));a.download='status.json';a.click()}
+</script></body></html>
